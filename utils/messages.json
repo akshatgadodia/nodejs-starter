@@ -1,0 +1,14 @@
+{
+  "userRegistrationSuccessfulMessage": "User registration successful.",
+  "userAlreadyExistsMessage": "User with this email already exists.",
+  "userNotFoundMessage": "User not found.",
+  "incorrectPasswordMessage": "Incorrect password.",
+  "loginSuccessfulMessage": "Login successful.",
+  "invalidRefreshTokenMessage": "Invalid refresh token.",
+  "accessTokenGeneratedSuccesfully": "Access token generated successfully.",
+  "passwordUpdatedMessage": "Password updated successfully.",
+  "passwordResetEmailSentMessage": "Password reset email sent successfully.",
+  "invalidTokenMessage": "Invalid token.",
+  "passwordResetSuccessMessage": "Password reset successful."
+}
+
