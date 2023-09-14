@@ -1,0 +1,29 @@
+version: "3"
+services:
+  database:
+    container_name: project_name_database
+    image: mongo
+    restart: always
+    volumes:
+      - mongodb-data:/data/db
+    ports:
+      - "27017:27017"
+    environment:
+      - "MONGO_INITDB_ROOT_USERNAME=user"
+      - "MONGO_INITDB_ROOT_PASSWORD=password"
+  backend:
+    build: .
+    container_name: project_name_backend
+    command: sh -c "node server.js"
+    restart: always
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
+    depends_on:
+      - database
+      
+volumes:
+  mongodb-data:

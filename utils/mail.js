@@ -1,5 +1,4 @@
 const nodemailer = require("nodemailer");
-const { BASE_URL } = require("./constants");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",

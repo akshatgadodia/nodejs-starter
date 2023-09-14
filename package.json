@@ -3,13 +3,13 @@
   "name": "node-js-starter",
   "version": "1.0.0",
   "description": "Node.js starter project",
+  "author": "Akshat Gadodia <akshatgadodia@gmail.com>",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "server": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Akshat Gadodia",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -23,6 +23,6 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^3.0.1"
   }
 }

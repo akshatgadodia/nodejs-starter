@@ -26,16 +26,12 @@ app.use("/v1/logs", express.static(path.join(__dirname, "/logs")));
 const corsHandler = require("./middlewares/corsHandler");
 app.use(corsHandler);
 
-//Cookie Parser
-const cookieParser = require("cookie-parser");
-app.use(cookieParser());
-
 //Using Express.JSON
 app.use(express.json());
 
 //Routes
-const indexRouter = require("./routes/indexRouter");
-app.use("/api", indexRouter);
+const indexRoutes = require("./routes/indexRoutes");
+app.use("/api", indexRoutes);
 
 // Error Handler
 const errorHandler = require("./middlewares/errorHandler");

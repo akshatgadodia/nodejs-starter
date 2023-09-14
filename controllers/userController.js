@@ -3,7 +3,6 @@ const User = require("../models/User");
 const asyncHandler = require("../middlewares/asyncHandler");
 const bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
-const generateTokens = require("../utils/generateTokens");
 const { sendPasswordResetEmail } = require("../utils/mail");
 const {
   userRegistrationSuccessfulMessage,
@@ -13,14 +12,13 @@ const {
   loginSuccessfulMessage,
   invalidRefreshTokenMessage,
   accessTokenGeneratedSuccesfully,
-  incorrectPasswordMessage,
   passwordUpdatedMessage,
-  userNotFoundMessage,
   passwordResetEmailSentMessage,
   invalidTokenMessage,
   passwordResetSuccessMessage
 } = require("../utils/messages.json");
 const baseUrl = require("../constants/baseUrl");
+const ROLES_LIST = require("../utils/rolesList")
 
 const { generateTokens, generateAccessTokenFromRefreshToken } = require("../utils/generateTokens");
 
@@ -36,10 +34,10 @@ const registerUser = asyncHandler(async (req, res, next) => {
     email,
     password: passwordHash,
     roles: {
-      USER: <YOUR_USER_ROLE_IDENTIFICATION (Can be any number or anything)>
+      USER: ROLES_LIST.USER//<YOUR_USER_ROLE_IDENTIFICATION (Can be any number or anything)>
     }
   });
-  const user = await newUser.save();  // Save the user to the database
+  user = await newUser.save();  // Save the user to the database
   res.status(201).json({
     success: true,
     data: {
@@ -49,7 +47,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
 });
 
 // Controller for user login
-const loginUser = async (req, res, next) => {
+const loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;  // Extract user login data from the request body
   try {
     const user = await User.findOne({ email });  // Check if a user with the provided email exists
@@ -73,11 +71,11 @@ const loginUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+});
 
 
 // Controller to generate a new access token using a refresh token
-const generateAccessToken = (req, res, next) => {
+const generateAccessToken = asyncHandler(async (req, res, next) => {
   const refreshToken = req.body.refreshToken || req.headers["refresh-token"];  // Extract refresh token from the request body or headers
   if (!refreshToken) {
     return next(new ErrorResponse(invalidRefreshTokenMessage, 401));
@@ -97,10 +95,10 @@ const generateAccessToken = (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+});
 
 // Controller to change user password using old password
-const changePassword = async (req, res, next) => {
+const changePassword = asyncHandler(async (req, res, next) => {
   const { userId, currentPassword, newPassword } = req.body;  // Extract user information from the request
   try {
     const user = await User.findById(userId);  // Find the user by userId
@@ -124,10 +122,10 @@ const changePassword = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+});
 
 // Controller to generate a link to generate new password
-const forgetPassword = async (req, res, next) => {
+const forgetPassword = asyncHandler(async (req, res, next) => {
   const { email } = req.body;  // Extract user information from the request
   try {
     const user = await User.findOne({ email });
@@ -147,10 +145,10 @@ const forgetPassword = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+});
 
 // Controller to generate new password using password reset token
-const resetPassword = async (req, res, next) => {
+const resetPassword = asyncHandler(async (req, res, next) => {
   const resetToken = req.params.token;
   const { newPassword } = req.body;
   try {
@@ -175,10 +173,10 @@ const resetPassword = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+});
 
 // Controller to soft delete a user
-const softDeleteUser = async (req, res, next) => {
+const softDeleteUser = asyncHandler(async (req, res, next) => {
   const userId = req.params.id;
   try {
     const user = await User.findById(userId);
@@ -195,7 +193,7 @@ const softDeleteUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-};
+});
 
 module.exports = { registerUser, loginUser, generateAccessToken, changePassword, forgetPassword, resetPassword, softDeleteUser }
 
